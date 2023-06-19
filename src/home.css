@@ -1,0 +1,386 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #010014;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+}
+
+@font-face {
+    font-family: SpaceAge;
+    src: url("fonts/spaceAge.ttf") ;
+}
+
+
+h1{
+    font-family: 'SpaceAge', sans-serif;
+    text-align: center;
+    font-size: 3em;
+    cursor: help;
+    margin-top: 8%;
+}
+
+h1 svg{
+width: 20px;
+height: auto;
+}
+
+.button{
+    border: 1px solid #fff;
+    color: white;
+    width: fit-content;
+    padding: 10px 20px;
+    margin: auto;
+    margin-top: 3%;
+}
+
+.intro{
+    max-width: 55vw;
+    text-align: center;
+    margin: auto;
+    font-weight: 200;
+    line-height: 1.3em;
+}
+
+.memory{
+    text-align: center;
+    font-style: italic;
+    font-weight: 200;
+}
+
+img{
+    width: 100%;
+    height: auto;
+}
+
+.memory span{
+text-decoration: underline;
+cursor: pointer;
+}
+
+.planetImg {
+    width: 200px;
+    margin: auto;
+}
+
+.hidden{
+    display: none
+}
+
+/*Planet rotation*/
+
+.container{
+    height: 100vh;
+    width: 100vw;
+  /*   border: 1px solid #fff; */
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: inherit;
+  }
+  .moon {
+    background-color: #39beff;
+    height: 170px;
+    width: 170px;
+    border-radius: 50%;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+  .crater {
+    background-color: #31b4ff;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    position: relative;
+  }
+  
+  .crater:before{
+    content: "";
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    box-shadow: -5px 0 0 2px #1ca4f9;
+    top: 2px;
+    left: 7px;
+  }
+  
+  .crater1 {
+    top: 27px;
+    left: 90px;
+    transform: scale(0.9);
+  }
+  
+  .crater2 {
+    bottom: 15px;
+    left: 61px;
+    transform: scale(0.6);
+  }
+  
+  .crater3 {
+    left: 15px;
+    transform: scale(1.05)
+  }
+  
+  .crater4 {
+    top: 23px;
+    left: 118px;
+    transform: scale(1.1)
+  }
+  
+  .crater5 {
+    left: 35px;
+    transform: scale(0.5)
+  }
+  
+  .shadow {
+    height: 190px;
+    width: 190px;
+    box-shadow: 21px 0 0 5px rgba(0,0,0,0.15);
+    border-radius: 50%;
+    position: relative;
+    bottom: 157.5px;
+    right: 46px;
+    filter: blur(3px)
+  }
+  
+  .eye {
+    height: 12px;
+    width: 12px;
+    background-color: #161616;
+    position: relative;
+    border-radius: 50%;
+  }
+  
+  .eye-l {
+    bottom: 255px;
+    left: 59px; 
+    animation: leftEye 3s ease-out infinite;
+  }
+  
+  .eye-r {
+    bottom: 267px;
+    left: 101px;
+    animation: rightEye 3s ease-out infinite;
+  }
+  
+  .mouth {
+    height:5px;
+    width: 10px;
+    border: 3px solid #161616;
+    position: relative;
+    bottom: 262px;
+    left: 79px;
+    border-top: none;
+    animation: mouthAnim 3s ease-out infinite;
+    border-radius: 0 0 10px 10px;
+  }
+  
+  .blush {
+    height: 7.5px;
+    width: 7.5px;
+    background-color: #F4DDE4;
+    position: relative;
+    border-radius: 50%;
+    filter: blur(3px)
+  }
+  
+  .blush1 {
+    bottom: 273px;
+    left: 50px;
+  }
+  
+  .blush2 {
+    bottom: 280px;
+    left: 115px;
+  }
+  
+  .orbit {
+    height: 280px;
+    width: 280px;
+  /*   border: 1px solid #fff; */
+    border-radius: 50%;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    animation: spin 5s infinite linear;
+  }
+  
+  @keyframes spin {
+    100%{
+      transform: rotate(360deg)
+    }
+  }
+  
+  .rocket {
+    background-color: #fafcf7;
+    height: 50px;
+    width: 25px;
+    border-radius: 50% 50% 0 0;
+    position: relative;
+    left: -11px;
+    top: 115px;
+  }
+  
+  .rocket:before{
+    position: absolute;
+    content: "";
+    background-color: #39beff;
+    height: 20px;
+    width: 55px;
+    z-index: -1;
+    border-radius: 50% 50% 0 0;
+    right: -15px;
+    bottom: 0;
+  }
+  .rocket:after{
+    position: absolute;
+    content: "";
+    background-color: #39beff;
+    height: 4px;
+    width: 15px;
+    border-radius: 0 0  2px 2px;
+    bottom: -4px;
+    left: 4.3px;
+  }
+  
+  .window {
+    position: relative;
+    height: 10px;
+    width: 10px;
+    background-color: #151845;
+    border: 2px solid #b8d2ec;
+    border-radius: 50%;
+    top: 15px;
+    left: 5px;
+  }
+
+  /*Texte loading*/
+
+  .loading{
+    width: fit-content;
+    height: 20px;
+    position: absolute;
+    text-align: center;
+    left: 50%;
+  transform: translateX(-50%);
+    bottom: 20%;
+}
+
+.loading p {
+    top: 0;
+    padding: 0;
+    margin: 0;
+    color: #4294EA;
+    animation: text 3.5s ease both infinite;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.blueLine{
+    position: absolute;
+    bottom: 0;
+    background-color: #31b4ff;
+    width: 100vw;
+    height: 2px;
+    animation: lines 3s ease-out infinite;
+}
+
+
+@keyframes lines{
+    0%{
+        width: 0vw;
+    }
+    70%{
+        width: 80vw;
+    }
+    100%{
+    width: 100vw;
+    }
+}
+
+@keyframes text {
+    0% {
+        letter-spacing: 1px;
+    }
+    40% {
+        letter-spacing: 2px;
+    }
+    80% {
+        letter-spacing: 1px;
+        
+    }
+    100% {
+        letter-spacing: 1px;
+    }
+    }
+
+@keyframes leftEye{
+    0%{
+        bottom: 255px;
+        left: 59px; 
+    }
+    20%{
+        bottom: 270px;
+        left: 59px; 
+    }
+    50%{
+        bottom: 270px;
+        left: 69px; 
+    }
+    100%{
+        bottom: 255px;
+        left: 69px; 
+    }
+}
+
+
+@keyframes rightEye{
+    0%{
+        bottom: 267px;
+        left: 101px;
+    }
+    20%{
+        bottom: 282px;
+        left: 101px;
+    }
+    50%{
+        bottom: 282px;
+        left: 111px;
+    }
+    100%{
+        bottom: 267px;
+        left: 111px;
+    }
+}
+
+@keyframes mouthAnim{
+    0%{
+        bottom: 262px;
+        left: 79px;
+    }
+    20%{
+        bottom: 277px;
+        left: 79px;
+    }
+    50%{
+        bottom: 277px;
+        left: 89px;
+    }
+    100%{
+        bottom: 262px;
+        left: 89px;
+    }
+}
