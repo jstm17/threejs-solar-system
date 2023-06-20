@@ -4,8 +4,6 @@ import {
 } from "three/examples/jsm/controls/OrbitControls.js"
 
 // Time
-
-
 let years = 0;
 let hours = 0;
 let days = 0;
@@ -34,7 +32,7 @@ const scene = new THREE.Scene();
 const loader = new THREE.TextureLoader();
 
 
-// Planets data
+// Planètes data
 const planets = [
     {
         name: 'sun',
@@ -76,13 +74,25 @@ const planets = [
         name: 'saturn',
         texture: 'saturnSurfaceMaterial.jpg',
         size: 7,
-        posX: 0
+        posX: 0,
+        ring: {
+            innerRadius: 10,
+            outerRadius: 15,
+            rotationX: 2.1,
+            rotationY: -0.5
+        }
     },
     {
         name: 'uranus',
         texture: 'uranusSurfaceMaterial.jpg',
         size: 6,
-        posX: 0
+        posX: 0,
+        ring: {
+            innerRadius: 10,
+            outerRadius: 11,
+            rotationX: 1.1,
+            rotationY: 0.5
+        }
     },
     {
         name: 'neptune',
@@ -117,46 +127,25 @@ planets.forEach(item => {
     const planet = new THREE.Mesh(planetGeometry, planetMaterial);
     planet.position.set(item.posX, 0, 0)
 
-
     scene.add(planet);
 
-    const named = item.name
+    planetsMesh[item.name] = planet;
 
-    console.log(named)
-
-    planetsMesh[named] = planet;
+    // Anneaux
+    if(item.ring) {
+        const ringGeometry = new THREE.RingGeometry( item.ring.innerRadius, item.ring.outerRadius, 32 );
+        const ringMaterial = new THREE.MeshBasicMaterial( { 
+            map: planetTexture,
+            color: 0xffffff,
+            side: THREE.DoubleSide,
+            transparent: true
+         } );
+        const ring = new THREE.Mesh( ringGeometry, ringMaterial );
+        ring.position.set(item.posX, 0, 0)
+        ring.rotation.set(item.ring.rotationX, item.ring.rotationY, 0)
+        scene.add( ring );
+    }
 });
-
-console.log(planetsMesh)
-console.log(planetsMesh["sun"])
-
-// Saturn Ring
-const saturnRingTexture = loader.load('textures/saturnSurfaceMaterial.jpg');
-const saturnRingGeometry = new THREE.RingGeometry( 10, 15, 32 );
-const saturnRingMaterial = new THREE.MeshBasicMaterial( { 
-    map: saturnRingTexture,
-    color: 0xffffff,
-    side: THREE.DoubleSide,
-    transparent: true
- } );
-const saturnRing = new THREE.Mesh( saturnRingGeometry, saturnRingMaterial );
-saturnRing.position.set(planets[6].posX, 0, 0)
-saturnRing.rotation.set(2.1, -0.5, 0)
-scene.add( saturnRing );
-
-// Uranus Ring
-const uranusRingTexture = loader.load('textures/uranusSurfaceMaterial.jpg');
-const uranusRingGeometry = new THREE.RingGeometry( 10, 11, 32 );
-const uranusRingMaterial = new THREE.MeshBasicMaterial( { 
-    map: uranusRingTexture,
-    color: 0xffffff,
-    side: THREE.DoubleSide,
-    transparent: true
- } );
-const uranusRing = new THREE.Mesh( uranusRingGeometry, uranusRingMaterial );
-uranusRing.position.set(planets[7].posX, 0, 0)
-uranusRing.rotation.set(1.1, 0.5, 0)
-scene.add( uranusRing );
 
 // Sizes
 const sizes = {
@@ -184,7 +173,7 @@ controls.enableDamping = true
 // Animate
 const animate = () => {
 
-    var time = new Date() * 0.0001;
+    let time = new Date() * 0.0001;
     
     planetsMesh["mercury"].position.x = Math.cos( time * 1.2 ) * 42;
     planetsMesh["mercury"].position.z = Math.sin( time * 1.2 ) * 42;
