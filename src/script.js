@@ -9,7 +9,6 @@ import {
 let years = 0;
 let hours = 0;
 let days = 0;
-let date = new Date();
 
 setInterval(function(){
     years++;
@@ -34,200 +33,130 @@ setInterval(function(){
 const scene = new THREE.Scene();
 const loader = new THREE.TextureLoader();
 
-// const planets = [
-//     {
-//         name: 'sun',
-//         texture: 'sunSurfaceMaterial.jpg',
-//         size: 20,
-//         posX: 0
-//     },
-//     {
-//         name: 'mercury',
-//         texture: 'mercurySurfaceMaterial.jpg',
-//         size: 2,
-//         posX: 31
-//     },
-// ]
 
-// planets.forEach(item => {
-//     const planetTexture = loader.load('textures/' + item.texture ); 
+// Planets data
+const planets = [
+    {
+        name: 'sun',
+        texture: 'sunSurfaceMaterial.jpg',
+        size: 20,
+        posX: 0
+    },
+    {
+        name: 'mercury',
+        texture: 'mercurySurfaceMaterial.jpg',
+        size: 1,
+        posX: 0
+    },
+    {
+        name: 'venus',
+        texture: 'venusSurfaceMaterial.jpg',
+        size: 3,
+        posX: 0
+    },
+    {
+        name: 'earth',
+        texture: 'earthSurfaceMaterial.jpg',
+        size: 4,
+        posX: 0
+    },
+    {
+        name: 'mars',
+        texture: 'marsSurfaceMaterial.png',
+        size: 2,
+        posX: 0
+    },
+    {
+        name: 'jupiter',
+        texture: 'jupiterSurfaceMaterial.jpg',
+        size: 10,
+        posX: 0
+    },
+    {
+        name: 'saturn',
+        texture: 'saturnSurfaceMaterial.jpg',
+        size: 7,
+        posX: 0
+    },
+    {
+        name: 'uranus',
+        texture: 'uranusSurfaceMaterial.jpg',
+        size: 6,
+        posX: 0
+    },
+    {
+        name: 'neptune',
+        texture: 'neptuneSurfaceMaterial.jpg',
+        size: 5,
+        posX: 0
+    },
+]
 
-//     const planetGeometry =  new THREE.SphereGeometry(item.size, 32, 32);
-//     const planetMaterial = new THREE.MeshBasicMaterial( { map: planetTexture } );
-//     const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-//     planet.position.set(item.posX,1,1)
-
-
-//     scene.add(planet);
-// });
 
 // Calcul position X des planètes
-const sunSize = 20;
-const planetsSize = {
-    mercury: 1,
-    venus: 3,
-    earth: 4,
-    mars: 2,
-    jupiter: 10,
-    saturn: 7,
-    uranus: 6,
-    neptune: 5
-};
-
 const distance = 20;
 
-const planetsPosX = (name) => {
+planets[1].posX = planets[0].size + planets[1].size*2 + distance;
+planets[2].posX = planets[1].posX + planets[2].size*2 + distance;
+planets[3].posX = planets[2].posX + planets[3].size*2 + distance;
+planets[4].posX = planets[3].posX + planets[4].size*2 + distance;
+planets[5].posX = planets[4].posX + planets[5].size + distance;
+planets[6].posX = planets[5].posX + planets[6].size*2 + distance;
+planets[7].posX = planets[6].posX + planets[7].size*2 + distance;
+planets[8].posX = planets[7].posX + planets[8].size*2 + distance;
+console.log(planets[8].posX);
 
-    const mercuryPos = sunSize + planetsSize.mercury*2 + distance;
-    const venusPos = mercuryPos + planetsSize.venus*2 + distance;
-    const earthPos = venusPos + planetsSize.earth*2 + distance;
-    const marsPos = earthPos + planetsSize.mars*2 + distance;
-    const jupiterPos = marsPos + planetsSize.jupiter + distance;
-    const saturnPos = jupiterPos + planetsSize.saturn*2 + distance;
-    const uranusPos = saturnPos + planetsSize.uranus*2 + distance;
-    const neptunePos = uranusPos + planetsSize.neptune*2 + distance;
-    console.log(mercuryPos);
-    console.log(earthPos);
-    console.log(marsPos);
-    console.log(jupiterPos);
-    
-    switch (name) {
-        case 'mercury':
-            return mercuryPos;
-        case 'venus':
-            return venusPos;
-        case 'earth':
-            return earthPos;
-        case 'mars':
-            return marsPos;
-        case 'jupiter':
-            return jupiterPos;
-        case 'saturn':
-            return saturnPos;
-        case 'uranus':
-            return uranusPos;
-        case 'neptune':
-            return neptunePos;
-    }
-}
+// Création des planètes
+const planetsMesh = {};
 
-// Sun
-const sunTexture = loader.load('textures/sunSurfaceMaterial.jpg');
+planets.forEach(item => {
+    const planetTexture = loader.load('textures/' + item.texture ); 
 
-const sunGeometry = new THREE.SphereGeometry(sunSize, 32, 32);
-const sunMaterial = new THREE.MeshBasicMaterial({
-    map: sunTexture
+    const planetGeometry =  new THREE.SphereGeometry(item.size, 32, 32);
+    const planetMaterial = new THREE.MeshBasicMaterial( { map: planetTexture } );
+    const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+    planet.position.set(item.posX, 0, 0)
+
+
+    scene.add(planet);
+
+    const named = item.name
+
+    console.log(named)
+
+    planetsMesh[named] = planet;
 });
 
-const sun = new THREE.Mesh(sunGeometry, sunMaterial);
-scene.add(sun);
+console.log(planetsMesh)
+console.log(planetsMesh["sun"])
 
-// Mercury
-const mercuryTexture = loader.load('textures/mercurySurfaceMaterial.jpg');
+// Saturn Ring
+const saturnRingTexture = loader.load('textures/saturnSurfaceMaterial.jpg');
+const saturnRingGeometry = new THREE.RingGeometry( 10, 15, 32 );
+const saturnRingMaterial = new THREE.MeshBasicMaterial( { 
+    map: saturnRingTexture,
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+    transparent: true
+ } );
+const saturnRing = new THREE.Mesh( saturnRingGeometry, saturnRingMaterial );
+saturnRing.position.set(planets[6].posX, 0, 0)
+saturnRing.rotation.set(2.1, -0.5, 0)
+scene.add( saturnRing );
 
-const mercuryGeometry = new THREE.SphereGeometry(1, 32, 32);
-const mercuryMaterial = new THREE.MeshBasicMaterial({
-    map: mercuryTexture
-});
-
-const mercury = new THREE.Mesh(mercuryGeometry, mercuryMaterial);
-mercury.position.set(planetsPosX('mercury'), 0, 0)
-scene.add(mercury);
-
-// Ring
-// const geometry = new THREE.RingGeometry( 42, 42.1, 32 );
-// const material = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide } );
-// const mesh = new THREE.Mesh( geometry, material );
-// mesh.rotation.set(1.5, 0, 0)
-// scene.add( mesh );
-
-// Venus
-const venusTexture = loader.load('textures/venusSurfaceMaterial.jpg');
-
-const venusGeometry = new THREE.SphereGeometry(3, 32, 32);
-const venusMaterial = new THREE.MeshBasicMaterial({
-    map: venusTexture
-});
-
-const venus = new THREE.Mesh(venusGeometry, venusMaterial);
-venus.position.set(planetsPosX('venus'), 0, 0)
-scene.add(venus);
-
-// Earth
-const earthTexture = loader.load('textures/earthSurface.jpg');
-
-const earthGeometry = new THREE.SphereGeometry(4, 32, 32);
-const earthMaterial = new THREE.MeshBasicMaterial({
-    map: earthTexture
-});
-
-const earth = new THREE.Mesh(earthGeometry, earthMaterial);
-earth.position.set(planetsPosX('earth'), 0, 0)
-scene.add(earth);
-
-// Mars
-const marsTexture = loader.load('textures/marsSurfaceMaterial.png');
-
-const marsGeometry = new THREE.SphereGeometry(2, 32, 32);
-const marsMaterial = new THREE.MeshBasicMaterial({
-    map: marsTexture
-});
-
-const mars = new THREE.Mesh(marsGeometry, marsMaterial);
-mars.position.set(planetsPosX('mars'), 0, 0)
-scene.add(mars);
-
-// Jupiter
-const jupiterTexture = loader.load('textures/jupiterSurfaceMaterial.jpg');
-
-const jupiterGeometry = new THREE.SphereGeometry(10, 32, 32);
-const jupiterMaterial = new THREE.MeshBasicMaterial({
-    map: jupiterTexture
-});
-
-const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
-jupiter.position.set(planetsPosX('jupiter'), 0, 0)
-scene.add(jupiter);
-
-// Saturn
-const saturnTexture = loader.load('textures/saturnSurfaceMaterial.jpg');
-
-const saturnGeometry = new THREE.SphereGeometry(7, 32, 32);
-const saturnMaterial = new THREE.MeshBasicMaterial({
-    map: saturnTexture
-});
-
-const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
-saturn.position.set(planetsPosX('saturn'), 1, 1)
-scene.add(saturn);
-
-// Uranus
-const uranusTexture = loader.load('textures/uranusSurfaceMaterial.jpg');
-
-const uranusGeometry = new THREE.SphereGeometry(6, 32, 32);
-const uranusMaterial = new THREE.MeshBasicMaterial({
-    map: uranusTexture
-});
-
-const uranus = new THREE.Mesh(uranusGeometry, uranusMaterial);
-uranus.position.set(planetsPosX('uranus'), 0, 0)
-scene.add(uranus);
-
-// Neptune
-const neptuneTexture = loader.load('textures/neptuneSurfaceMaterial.jpg');
-
-const neptuneGeometry = new THREE.SphereGeometry(5, 32, 32);
-const neptuneMaterial = new THREE.MeshBasicMaterial({
-    map: neptuneTexture
-});
-
-const neptune = new THREE.Mesh(neptuneGeometry, neptuneMaterial);
-neptune.position.set(planetsPosX('neptune'), 0, 0)
-scene.add(neptune);
-
-
-const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
-scene.add( directionalLight );
+// Uranus Ring
+const uranusRingTexture = loader.load('textures/uranusSurfaceMaterial.jpg');
+const uranusRingGeometry = new THREE.RingGeometry( 10, 11, 32 );
+const uranusRingMaterial = new THREE.MeshBasicMaterial( { 
+    map: uranusRingTexture,
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+    transparent: true
+ } );
+const uranusRing = new THREE.Mesh( uranusRingGeometry, uranusRingMaterial );
+uranusRing.position.set(planets[7].posX, 0, 0)
+uranusRing.rotation.set(1.1, 0.5, 0)
+scene.add( uranusRing );
 
 // Sizes
 const sizes = {
@@ -256,14 +185,14 @@ controls.enableDamping = true
 const animate = () => {
 
     var time = new Date() * 0.0001;
-    mercury.position.x = Math.cos( time * 1 ) * 42;
-    mercury.position.z = Math.sin( time * 1 ) * 42;
+    
+    planetsMesh["mercury"].position.x = Math.cos( time * 1.2 ) * 42;
+    planetsMesh["mercury"].position.z = Math.sin( time * 1.2 ) * 42;
 
-    earth.position.x = Math.cos( time * 1.2 ) * 96;
-    earth.position.z = Math.sin( time * 1.2 ) * 96;
+    planetsMesh["earth"].position.x = Math.cos( time * 1.2 ) * 96;
+    planetsMesh["earth"].position.z = Math.sin( time * 1.2 ) * 96;
 
     // console.log(time)
-
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
