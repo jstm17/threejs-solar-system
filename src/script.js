@@ -124,6 +124,7 @@ planets[8].posX = planets[7].posX + planets[8].size*2 + distance;
 // Création des planètes
 const planetsMesh = {};
 const ringsMesh = {};
+const clickableObjects = [];
 
 planets.forEach(item => {
 
@@ -136,8 +137,9 @@ planets.forEach(item => {
     }
 
     const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-    planet.position.set(item.posX, 0, 0)
-
+    planet.position.set(item.posX, 0, 0);
+    planet.name = item.name;
+    clickableObjects.push(planet);
     scene.add(planet);
 
     planetsMesh[item.name] = planet;
@@ -286,7 +288,7 @@ function onClick(event) {
     raycaster.setFromCamera(mouse, camera);
 
     // Calcul de l'intersection avec les obj ( cube, sphere, cone)
-    const intersects = raycaster.intersectObjects(objects, true);
+    const intersects = raycaster.intersectObjects(clickableObjects, true);
 
     if (intersects.length > 0) {
         // Au click
