@@ -3,11 +3,27 @@ import {
     OrbitControls
 } from "three/examples/jsm/controls/OrbitControls.js";
 
-// Time
+// Time / Pause
+
+const pauseBtn = document.querySelector('.pause-btn');
+
+pauseBtn.addEventListener('click', function() {
+    pauseBtn.classList.toggle('stop');
+
+    if (pauseBtn.classList.contains('stop')) {
+        pauseBtn.innerHTML = "Resume";
+      } else {
+        pauseBtn.innerHTML = "Stop";
+      }
+})
+
 let years = 0;
 
 setInterval(function(){
-    years++;
+
+    if(!pauseBtn.classList.contains('stop')){
+        years++;
+    } 
 document.querySelector('.year').innerText = years + " years passed";
 
 }, 5000);   
@@ -105,17 +121,21 @@ planets[5].posX = planets[4].posX + planets[5].size + distance;
 planets[6].posX = planets[5].posX + planets[6].size*2 + distance;
 planets[7].posX = planets[6].posX + planets[7].size*2 + distance;
 planets[8].posX = planets[7].posX + planets[8].size*2 + distance;
-console.log(planets[8].posX);
 
 // Création des planètes
 const planetsMesh = {};
 const ringsMesh = {};
 
 planets.forEach(item => {
-    const planetTexture = loader.load('textures/' + item.texture ); 
 
+    const planetTexture = loader.load('textures/' + item.texture ); 
     const planetGeometry =  new THREE.SphereGeometry(item.size, 32, 32);
-    const planetMaterial = new THREE.MeshLambertMaterial( { map: planetTexture } );
+    let planetMaterial = new THREE.MeshLambertMaterial( { map: planetTexture } );
+
+    if(item.name == "sun"){
+        planetMaterial = new THREE.MeshBasicMaterial( { map: planetTexture } );
+    }
+
     const planet = new THREE.Mesh(planetGeometry, planetMaterial);
     planet.position.set(item.posX, 0, 0)
 
@@ -156,7 +176,7 @@ planets.forEach(item => {
 
     // Trajectoires
         const pathGeometry = new THREE.RingGeometry( item.posX, item.posX + 0.1, 64 );
-        const pathMaterial = new THREE.MeshLambertMaterial( { 
+        const pathMaterial = new THREE.MeshBasicMaterial( { 
             color: 0xffffff,
             side: THREE.DoubleSide
          } );
@@ -168,7 +188,7 @@ planets.forEach(item => {
 });
 
 // Lumière
-const pointLight = new THREE.PointLight( 0xffffff, 5, 500, 3 );
+const pointLight = new THREE.PointLight( 0xFFEFAD, 5, 500, 3 );
 pointLight.position.set( 5, 5, 5 );
 scene.add( pointLight );
 // const helper = new THREE.PointLightHelper( pointLight, 50 );
@@ -177,18 +197,53 @@ scene.add( pointLight );
 const ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 ); // soft white light
 scene.add( ambientLight );
 
+// Lumière du soleil
+const sunLightTexture = new THREE.TextureLoader().load( 'textures/glow.png');
+const sunLightMaterial = new THREE.SpriteMaterial( { map: sunLightTexture, color: 0xFFEFAD, opacity: 0.5 } );
+
+const sprite = new THREE.Sprite( sunLightMaterial );
+sprite.scale.set(300, 300)
+scene.add( sprite );
+
+const sunLightMaterial2 = new THREE.SpriteMaterial( { map: sunLightTexture, color: 0xF89C08} );
+
+const sprite2 = new THREE.Sprite( sunLightMaterial2 );
+sprite2.scale.set(100, 100)
+scene.add( sprite2 );
+
 // Stars
+const starTexture = new THREE.TextureLoader().load( 'textures/glow.png');
 const starsNb = 6000;
+const starsMesh = [];
 
 for(let i=0; i < starsNb; i++){
-    const starGeometry =  new THREE.SphereGeometry(0.1, 32, 32);
-    const starMaterial = new THREE.MeshLambertMaterial( {color: 0xffffff} );
-    const star = new THREE.Mesh(starGeometry, starMaterial);
+    const starMaterial = new THREE.SpriteMaterial( { map: starTexture, color: 0xffffff} );
 
+    const star = new THREE.Sprite( starMaterial );
+    const starScale = Math.random()*1 - 1;
+    star.scale.set(starScale, starScale)
     star.position.set(Math.random()*1000 - 500 , Math.random()*1000 - 500 ,  Math.random()*1000 - 500);
-    
     scene.add( star );
+
+    // starsMesh.push(star);
+    starsMesh.push({
+        'mesh': star,
+        'posX': star.position.x,
+        'posY': star.position.y,
+        'posZ': star.position.z
+    })
+
 }
+
+// console.log(starsMesh[0].mesh)
+
+// const starMaterial = new THREE.SpriteMaterial( { map: starTexture, color: 0xffffff} );
+
+//     const star = new THREE.Sprite( starMaterial );
+//     star.scale.set(200, 200)
+//     star.position.set(100, 100, 0);
+//     scene.add( star );
+
 
 
 // Sizes
@@ -213,13 +268,26 @@ renderer.setSize(sizes.width, sizes.height);
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 
-console.log(planetsMesh)
+// let counter = 0;
+// setInterval(function(){
+//     counter += 0.01;
+
+// }, 1)
+
+
 // Animate
 const animate = () => {
 
-    // Rotation planète + anneaux autour du soleil
-    let time = new Date() * 0.0001;
-    
+    // Rotation planète + anneaux autour du soleil   
+    let time = 0;
+
+    // Stop rotation qd click sur stop
+    if(!pauseBtn.classList.contains('stop')){
+        time = new Date() * 0.0001;
+    } else {
+        time = time
+    }
+
     planetsMesh["mercury"].position.x = Math.cos( time * 77.4 ) * planets[1].posX;
     planetsMesh["mercury"].position.z = Math.sin( time * 77.4 ) * planets[1].posX;
 
@@ -258,7 +326,23 @@ const animate = () => {
       for (let key in ringsMesh) {
         ringsMesh[key].rotation.y += 0.001;
       }
-    // console.log(time)
+
+    // Déplacement des étoiles
+    // starsMesh.forEach(star => {
+    //     // console.log(star)
+    //     const starMesh = star.mesh;
+    //     // const nb = Math.random()*0.02 - 0.01;
+
+    //     starMesh.position.x = Math.cos(time * 1 )* star.posX ;
+    //     starMesh.position.z = Math.sin(time * 1)* star.posZ ;
+    //     // starMesh.position.y = Math.sin(time * 1)* star.posX ;
+    // })
+
+   
+    // star.position.x =  Math.cos(counter*2)*100 ;
+    // star.position.z =  Math.sin(counter*2)*100 ;
+    //   console.log(counter)
+
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);

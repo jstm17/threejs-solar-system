@@ -16,3 +16,11 @@ html {
     position: absolute;
     color: white;
 }
+
+.pause-btn {
+    cursor: pointer;
+}
+
+.resume {
+    color: antiquewhite;
+}
