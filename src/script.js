@@ -255,7 +255,7 @@ const sizes = {
 
 // Camera
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height)
-camera.position.set(0, 300, 500)
+camera.position.set(0, 300, 500);
 scene.add(camera);
 
 // Renderer 
@@ -264,6 +264,11 @@ const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height);
+
+
+// Controls
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -293,14 +298,62 @@ function onClick(event) {
     if (intersects.length > 0) {
         // Au click
         const object = intersects[0].object;
-        alert(`Forme géométrique touchée : ${object.name}`);
+
+        console.log(object.name);
+
+        var aabb = new THREE.Box3().setFromObject(object);
+        var center = aabb.getCenter(new THREE.Vector3());
+        var size = aabb.getSize(new THREE.Vector3());
+
+        // Calcul du centre de la forme de l'objet
+        object.geometry.computeBoundingBox();
+        var boundingBox = object.geometry.boundingBox;
+        var objectCenter = new THREE.Vector3();
+        boundingBox.getCenter(objectCenter);
+
+        var startPosition = camera.position.clone();
+        var targetPosition = new THREE.Vector3(center.x + center.x, center.y + center.y , center.z + size.z);
+
+        var duration = 1; // Durée de l'animation en secondes
+        var startTime = Date.now(); // Temps de début de l'animation
+
+        // Désactiver OrbitControls pendant l'animation
+
+        function animateCamera() {
+        var currentTime = Date.now();
+        var elapsed = (currentTime - startTime) / 1000; // Temps écoulé en secondes
+
+        console.log(objectCenter);
+        if (elapsed > duration) {
+            // Animation terminée
+            camera.position.copy(targetPosition);
+            controls.target.set(targetPosition);
+            // Réactiver OrbitControls après l'animation
+            // controls.enabled = true;
+        } else {
+            // Animation en cours
+            var t = elapsed / duration; // Facteur de progression entre 0 et 1
+            camera.position.lerpVectors(startPosition, targetPosition, t);
+            controls.target.set(targetPosition);
+            requestAnimationFrame(animateCamera);
+        }
+        }
+
+        animateCamera();
+
+        
+        
+        
+        
+        // if (!canvas.classList.contains("zoom")) {
+
+            // canvas.classList.add("zoom");
+        // }
+
+
     }
 }
 
-
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
 
 // let counter = 0;
 // setInterval(function(){
