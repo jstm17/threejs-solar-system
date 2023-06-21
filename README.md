@@ -18,10 +18,6 @@ This project was carried out with the use of the following languages :
 ![Three.js](https://img.shields.io/badge/Three.js-000?logo=threedotjs&logoColor=fff&style=flat)
 ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000&style=flat)
 
-for the database: 
-
-![Mongodb](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
-
 
 ## 📺 Getting Started
 
