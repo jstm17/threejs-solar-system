@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Système Solaire</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+    <link rel="manifest" href="/img/site.webmanifest">
+    <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div class="container">
+        <div class="moon">
+        <div class="crater crater1"></div>
+        <div class="crater crater2"></div>
+        <div class="crater crater3"></div>
+        <div class="crater crater4"></div>
+        <div class="crater crater5"></div>
+        <div class="shadow"></div>
+        <div class="eye eye-l"></div>
+        <div class="eye eye-r"></div>
+        <div class="mouth"></div>
+        <div class="blush blush1"></div>
+        <div class="blush blush2"></div>
+        </div>
+        <div class="orbit">
+        <div class="rocket">
+                <div class="window"></div>
+        </div>
+        </div>
+        <div class="loading">
+            <p>Chargement...</p>
+        </div>
+        <div class="blueLine">
+        </div>
+    </div>
+    <nav class="menu">
+        <div class="burger">
+        <div class="wrapper-menu">
+        <div class="line-menu half start">         </div>
+        <div class="line-menu"></div>
+        <div class="line-menu half end">           </div>
+        </div>
+        </div>
+    <ul>
+        <li class="none"><a href="/">Système Solaire</a></li>
+        <li class="none"><a href="#">Planètes</a></li>
+        <li><a href="/credits.html">Crédits</a></li>
+    </ul>
+    </nav>
+    <section class="shooting-star">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </section>
+    <div class="">
+        <div class="decor"></div>
+        <h1>Le systeme solaire <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+        </svg>
+        </h1>
+        <p class="intro">Bienvenue dans notre système solaire interactif ! Explorez les merveilles de l'univers en naviguant à travers les différentes planètes qui composent notre système solaire. Observez les rotations gracieuses des planètes autour du soleil et découvrez des informations fascinantes sur chacune d'entre elles. Cliquez sur une planète pour en savoir plus sur sa taille, sa composition et bien plus encore. Préparez-vous à un voyage interstellaire captivant et laissez-vous émerveiller par la beauté de notre cosmos</p>
+        <div class="button">Découvrir</div>
+        <p class="memory">"<span>M</span>e <span>V</span>oilà <span>T</span>oute <span>M</span>ignonne, <span>J</span>e <span>S</span>uis <span>U</span>ne <span>N</span>ymphe"</p>
+        <div class="planetImgBig">
+
+        </div>
+    </div>
+    <script>
+        var container = document.querySelector(".container")
+        const myTimeout = setTimeout(hideLoader, 3000);
+        function hideLoader() {
+            container.style.display="none";
+        clearTimeout(myTimeout);
+        }
+        var wrapperMenu = document.querySelector('.wrapper-menu');
+        var lis = document.querySelectorAll(".none");
+        console.log(lis);
+        li1 = lis[0];
+        li2  = lis[1];
+
+        wrapperMenu.addEventListener('click', function(){
+        wrapperMenu.classList.toggle('open');
+        li1.classList.toggle('none');
+        li2.classList.toggle('none');
+        })
+    </script>
+</body>
+</html>
