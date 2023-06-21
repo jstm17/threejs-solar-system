@@ -3,31 +3,6 @@ import {
     OrbitControls
 } from "three/examples/jsm/controls/OrbitControls.js";
 
-// Time / Pause
-
-const pauseBtn = document.querySelector('.pause-btn');
-
-pauseBtn.addEventListener('click', function() {
-    pauseBtn.classList.toggle('stop');
-
-    if (pauseBtn.classList.contains('stop')) {
-        pauseBtn.innerHTML = "Resume";
-      } else {
-        pauseBtn.innerHTML = "Stop";
-      }
-})
-
-let years = 0;
-
-setInterval(function(){
-
-    if(!pauseBtn.classList.contains('stop')){
-        years++;
-    } 
-document.querySelector('.year').innerText = years + " years passed";
-
-}, 5000);   
-
 // Scene 
 const scene = new THREE.Scene();
 const loader = new THREE.TextureLoader();
@@ -236,14 +211,12 @@ for(let i=0; i < starsNb; i++){
 
 }
 
-// console.log(starsMesh[0].mesh)
+    // const starMaterial = new THREE.SpriteMaterial( { map: starTexture, color: 0xffffff} );
 
-// const starMaterial = new THREE.SpriteMaterial( { map: starTexture, color: 0xffffff} );
-
-//     const star = new THREE.Sprite( starMaterial );
-//     star.scale.set(200, 200)
-//     star.position.set(100, 100, 0);
-//     scene.add( star );
+    // const star = new THREE.Sprite( starMaterial );
+    // star.scale.set(200, 200)
+    // star.position.set(100, 100, 0);
+    // scene.add( star );
 
 
 
@@ -297,60 +270,84 @@ function onClick(event) {
     }
 }
 
-
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 
-// let counter = 0;
-// setInterval(function(){
-//     counter += 0.01;
 
-// }, 1)
+// Time / Pause
+
+const pauseBtn = document.querySelector('.pause-btn');
+
+pauseBtn.addEventListener('click', function() {
+    pauseBtn.classList.toggle('stop');
+
+    if (pauseBtn.classList.contains('stop')) {
+        pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd" />';
+      } else {
+        pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM9 8.25a.75.75 0 00-.75.75v6c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75H9zm5.25 0a.75.75 0 00-.75.75v6c0 .414.336.75.75.75H15a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75h-.75z" clip-rule="evenodd" />';
+      }
+})
+
+let seconde = 0;
+let years = 0;
 
 
 // Animate
 const animate = () => {
-
-    // Rotation planète + anneaux autour du soleil   
-    let time = 0;
-
+    
     // Stop rotation qd click sur stop
     if(!pauseBtn.classList.contains('stop')){
-        time = new Date() * 0.0001;
+        seconde += 0.01;
+        
+        // +1 an à chaque fois que la Terre fait un tour complet 
+        setTimeout(() => {
+            if(Math.round(planetsMesh["earth"].position.x) == planets[3].posX){
+                years += 0.2;
+                // console.log(planetsMesh["earth"].position.x)
+                // console.log(years)
+            } else {
+                years = Math.round(years);
+            }
+        }, 500)
+        
     } else {
-        time = time
+        seconde = seconde
     }
 
-    planetsMesh["mercury"].position.x = Math.cos( time * 77.4 ) * planets[1].posX;
-    planetsMesh["mercury"].position.z = Math.sin( time * 77.4 ) * planets[1].posX;
+    // Affichage du nombre d'années
+    document.querySelector('.year').innerHTML = Math.round(years) + " années passées";
 
-    planetsMesh["venus"].position.x = Math.cos( time * 38.7 ) * planets[2].posX;
-    planetsMesh["venus"].position.z = Math.sin( time * 38.7 ) * planets[2].posX;
+    // Rotation planète + anneaux autour du soleil  
+    planetsMesh["mercury"].position.x = Math.cos( seconde * 25 ) * planets[1].posX;
+    planetsMesh["mercury"].position.z = Math.sin( seconde * 25 ) * planets[1].posX;
 
-    planetsMesh["earth"].position.x = Math.cos( time * 12.9 ) * planets[3].posX;
-    planetsMesh["earth"].position.z = Math.sin( time * 12.9 ) * planets[3].posX;
-    planetsMesh["lune"].position.x = Math.cos( time * 12.9 ) * planets[3].posX + 5;
-    planetsMesh["lune"].position.z = Math.sin( time * 12.9 ) * planets[3].posX + 5;
+    planetsMesh["venus"].position.x = Math.cos( seconde * 8.5 ) * planets[2].posX;
+    planetsMesh["venus"].position.z = Math.sin( seconde * 8.5 ) * planets[2].posX;
 
-    planetsMesh["mars"].position.x = Math.cos( time * 7.74 ) * planets[4].posX;
-    planetsMesh["mars"].position.z = Math.sin( time * 7.74 ) * planets[4].posX;
+    planetsMesh["earth"].position.x = Math.cos( seconde * 5 ) * planets[3].posX;
+    planetsMesh["earth"].position.z = Math.sin( seconde * 5 ) * planets[3].posX;
+    planetsMesh["lune"].position.x = Math.cos( seconde * 5 ) * planets[3].posX + 5;
+    planetsMesh["lune"].position.z = Math.sin( seconde * 5 ) * planets[3].posX + 5;
 
-    planetsMesh["jupiter"].position.x = Math.cos( time * 4.128 ) * planets[5].posX;
-    planetsMesh["jupiter"].position.z = Math.sin( time * 4.128 ) * planets[5].posX;
+    planetsMesh["mars"].position.x = Math.cos( seconde * 2.5 ) * planets[4].posX;
+    planetsMesh["mars"].position.z = Math.sin( seconde * 2.5 ) * planets[4].posX;
 
-    planetsMesh["saturn"].position.x = Math.cos( time * 0.645 ) * planets[6].posX;
-    planetsMesh["saturn"].position.z = Math.sin( time * 0.645 ) * planets[6].posX;
-    ringsMesh["saturn"].position.x = Math.cos( time * 0.645 ) * planets[6].posX;
-    ringsMesh["saturn"].position.z = Math.sin( time * 0.645 ) * planets[6].posX;
+    planetsMesh["jupiter"].position.x = Math.cos( seconde * 0.4 ) * planets[5].posX;
+    planetsMesh["jupiter"].position.z = Math.sin( seconde * 0.4 ) * planets[5].posX;
 
-    planetsMesh["uranus"].position.x = Math.cos( time * 0.258 ) * planets[7].posX;
-    planetsMesh["uranus"].position.z = Math.sin( time * 0.258 ) * planets[7].posX;
-    ringsMesh["uranus"].position.x = Math.cos( time * 0.258 ) * planets[7].posX;
-    ringsMesh["uranus"].position.z = Math.sin( time * 0.258 ) * planets[7].posX;
+    planetsMesh["saturn"].position.x = Math.cos( seconde * 0.3 ) * planets[6].posX;
+    planetsMesh["saturn"].position.z = Math.sin( seconde * 0.3 ) * planets[6].posX;
+    ringsMesh["saturn"].position.x = Math.cos( seconde * 0.3 ) * planets[6].posX;
+    ringsMesh["saturn"].position.z = Math.sin( seconde * 0.3 ) * planets[6].posX;
 
-    planetsMesh["neptune"].position.x = Math.cos( time * 0.007 ) * planets[8].posX;
-    planetsMesh["neptune"].position.z = Math.sin( time * 0.007 ) * planets[8].posX;
+    planetsMesh["uranus"].position.x = Math.cos( seconde * 0.1 ) * planets[7].posX;
+    planetsMesh["uranus"].position.z = Math.sin( seconde * 0.1 ) * planets[7].posX;
+    ringsMesh["uranus"].position.x = Math.cos( seconde * 0.1 ) * planets[7].posX;
+    ringsMesh["uranus"].position.z = Math.sin( seconde * 0.1 ) * planets[7].posX;
+
+    planetsMesh["neptune"].position.x = Math.cos( seconde * 0.006 ) * planets[8].posX;
+    planetsMesh["neptune"].position.z = Math.sin( seconde * 0.006 ) * planets[8].posX;
 
     // Rotation planète + anneaux
     for (let key in planetsMesh) {
@@ -367,15 +364,15 @@ const animate = () => {
     //     const starMesh = star.mesh;
     //     // const nb = Math.random()*0.02 - 0.01;
 
-    //     starMesh.position.x = Math.cos(time * 1 )* star.posX ;
-    //     starMesh.position.z = Math.sin(time * 1)* star.posZ ;
+    //     starMesh.position.x = Math.cos(seconde * 1 )* star.posX ;
+    //     starMesh.position.z = Math.sin(seconde * 1)* star.posZ ;
     //     // starMesh.position.y = Math.sin(time * 1)* star.posX ;
     // })
 
    
-    // star.position.x =  Math.cos(counter*2)*100 ;
-    // star.position.z =  Math.sin(counter*2)*100 ;
-    //   console.log(counter)
+    // star.position.x =  Math.cos(seconde*1)*100 ;
+    // star.position.z =  Math.sin(seconde*1)*100 ;
+    //   console.log(seconde)
 
     requestAnimationFrame(animate);
     controls.update();

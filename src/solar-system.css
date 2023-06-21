@@ -1,0 +1,47 @@
+*{
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Exo 2', sans-serif;
+    background-color: black !important;
+}
+
+html {
+    height: 100vh;
+}
+
+.time {
+    background: #fff;
+    color: black;
+    border-radius: 40px;
+    padding: 8px 15px;
+    padding-left: 20px;
+    display: flex;
+    width: fit-content;
+    transition: width 2s linear;
+    position: fixed;
+    right: 7vh;
+    top: 7vh;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 900 !important;
+    align-items: center;
+    display: flex;
+    text-transform: uppercase;
+}
+
+.pause-btn {
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    margin-left: 10px;
+}
+
+.resume {
+}
+
+.menu{
+    z-index: 50 !important;
+}

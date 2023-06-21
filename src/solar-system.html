@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THREE.js</title>
+    <link rel="stylesheet" href="solar-system.css">
+    <link rel="stylesheet" href="global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap"
+    rel="stylesheet">
+</head>
+<body>
+    
+    <nav class="menu">
+        <div class="burger">
+        <div class="wrapper-menu">
+        <div class="line-menu half start">         </div>
+        <div class="line-menu"></div>
+        <div class="line-menu half end">           </div>
+        </div>
+        </div>
+    <ul>
+        <li class="none"><a href="/">Accueil</a></li>
+        <li><a href="/solar-system.html">Système Solaire</a></li>
+        <li class="none"><a href="/credits.html">Crédits</a></li>
+    </ul>
+    </nav>
+
+    <div class="time">
+        <p class="year">0 année passée</p>
+        <svg class="pause-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM9 8.25a.75.75 0 00-.75.75v6c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75H9zm5.25 0a.75.75 0 00-.75.75v6c0 .414.336.75.75.75H15a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75h-.75z" clip-rule="evenodd" />
+            
+          </svg>
+    </div>
+    <canvas class="webgl"></canvas>
+
+    <script type="module" src="./script.js"></script>
+    <script src="menu.js"></script>
+</body>
+</html>
