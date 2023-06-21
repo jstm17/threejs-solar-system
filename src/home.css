@@ -11,8 +11,8 @@ body{
     height: 100vh;
     width: 100vw;
     overflow-y: hidden;
-    background-size: 66px 66px;
-    background-image:  repeating-linear-gradient(to right, #2a2929, #2a2929 0.26px, #000000 0.26px, #000000);
+    background-size: 70px 70px;
+    background-image:  repeating-linear-gradient(to right, #1c1b1b, #1c1b1b 0.26px, #000000 0.26px, #000000);
 }
 
 @font-face {
@@ -93,6 +93,7 @@ cursor: pointer;
     right: 0;
     top: 0;
     bottom: 0;
+    z-index: 5;
     background-color: inherit;
   }
   .moon {
