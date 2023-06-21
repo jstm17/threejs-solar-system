@@ -32,7 +32,6 @@ document.querySelector('.year').innerText = years + " years passed";
 const scene = new THREE.Scene();
 const loader = new THREE.TextureLoader();
 
-
 // Planètes data
 const planets = [
     {
@@ -125,6 +124,7 @@ planets[8].posX = planets[7].posX + planets[8].size*2 + distance;
 // Création des planètes
 const planetsMesh = {};
 const ringsMesh = {};
+const clickableObjects = [];
 
 planets.forEach(item => {
 
@@ -137,8 +137,9 @@ planets.forEach(item => {
     }
 
     const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-    planet.position.set(item.posX, 0, 0)
-
+    planet.position.set(item.posX, 0, 0);
+    planet.name = item.name;
+    clickableObjects.push(planet);
     scene.add(planet);
 
     planetsMesh[item.name] = planet;
@@ -263,6 +264,39 @@ const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height);
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+// Eventlistener (onClick)
+canvas.addEventListener('click', onClick);
+
+function onClick(event) {
+    // Convertir les coordonnées de la souris en coordonnées normalisés ( de -1 à 1 sur les axes X et Y)
+    const rect = canvas.getBoundingClientRect();
+    // getBoundingClientRect : nous donne la position et la taille du canvas par rapport à la fenêtre du navigateur.
+    const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    // Calcul de la différence entre les coordonnées de la souris et les coordonnées du coin supérieur gauche du canvas
+    // (event.clientX - rect.left pour l'axe x et event.clientY - rect.top pour l'axe y). 
+    // Cela nous donne les coordonnées de la souris relatives au coin supérieur gauche du canvas.
+    // On les normalise en les divisant par la largeur et la hauteur du canvas 
+    mouse.x = x;
+    mouse.y = y;
+
+    // Mise a jour du rayon de sélection à partir de la camera
+    raycaster.setFromCamera(mouse, camera);
+
+    // Calcul de l'intersection avec les obj ( cube, sphere, cone)
+    const intersects = raycaster.intersectObjects(clickableObjects, true);
+
+    if (intersects.length > 0) {
+        // Au click
+        const object = intersects[0].object;
+        alert(`Forme géométrique touchée : ${object.name}`);
+    }
+}
+
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
