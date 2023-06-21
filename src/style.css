@@ -24,3 +24,7 @@ html {
 .resume {
     color: antiquewhite;
 }
+
+.menu{
+    z-index: 50 !important;
+}

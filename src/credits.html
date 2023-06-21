@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crédits</title>
     <link rel="stylesheet" href="credits.css">
+    <link rel="stylesheet" href="global.css">
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
@@ -24,8 +25,8 @@
         </div>
         </div>
     <ul>
+        <li class="none"><a href="/">Accueil</a></li>
         <li class="none"><a href="/">Système Solaire</a></li>
-        <li class="none"><a href="#">Planètes</a></li>
         <li><a href="/credits.html">Crédits</a></li>
     </ul>
     </nav>
@@ -93,24 +94,6 @@
         <p>© - 2023 <a href="https://g-equality.com/">G EQUALITY</a></p>
     </div>
 
-    <script>
-        var container = document.querySelector(".container")
-        const myTimeout = setTimeout(hideLoader, 3000);
-        function hideLoader() {
-            container.style.display="none";
-        clearTimeout(myTimeout);
-        }
-        var wrapperMenu = document.querySelector('.wrapper-menu');
-        var lis = document.querySelectorAll(".none");
-        console.log(lis);
-        li1 = lis[0];
-        li2  = lis[1];
-
-        wrapperMenu.addEventListener('click', function(){
-        wrapperMenu.classList.toggle('open');
-        li1.classList.toggle('none');
-        li2.classList.toggle('none');
-        })
-    </script>
+    <script src="menu.js"></script>
 </body>
 </html>

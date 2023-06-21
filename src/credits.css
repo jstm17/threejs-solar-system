@@ -1,17 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500&display=swap');
-
-@font-face {
-    font-family: SpaceAge;
-    src: url("fonts/spaceAge.ttf") ;
-}
 
 body{
-    margin: 0;
-    padding: 0;
-    background-color: #010014;
-    color: white;
-    font-family: 'Exo 2', sans-serif;
-    font-weight: 300;
     height: 100vh;
     width: 100vw;
     overflow-y: hidden;
@@ -20,18 +8,7 @@ body{
     background-image:  repeating-linear-gradient(to right, #1c1b1b, #1c1b1b 0.26px, #000000 0.26px, #000000);
 }
 
-img{
-    width: 100%;
-    height: auto;
-}
-
 h1{
-    font-family: 'SpaceAge', sans-serif;
-    font-size: 3em;
-    cursor: help;
-    padding-top: 12%;
-    transition: all 0.3s ease;
-    font-weight: 400;
     text-align: center;
 }
 
@@ -82,139 +59,4 @@ a:hover{
     transform: translateX(-50%);
     bottom: 10%;
     font-size: 0.8em;
-}
-
-.menu{
-    background: #fff;
-    border-radius: 40px;
-    padding: 8px 15px;
-    display: flex;
-    width: fit-content;
-    transition: width 2s linear;
-    position: fixed;
-    left: 10%;
-    top: 15%;
-  }
-  
-  ul{
-    margin: auto;
-    padding: 0;
-  }
-  
-  .menu li{
-    display: inline-block;
-    transition: all 2s linear;
-  }
-  
-  .menu li:first-child{
-    animation: fade_in_show 1s;
-  }
-  
-  .menu li:nth-child(2){
-    animation: fade_in_show 0.8s;
-  }
-
-    .menu li a:hover{
-        color: #78c7f4;
-    }
-    
-    .menu li:last-child a{
-        color: #31b4ff;
-    }
-
-    .menu li a{
-        color: #000;
-        text-decoration: none;
-        margin: auto 10px;
-        transition: all 0.3s ease;
-        font-size: 12px;
-        font-style: normal;
-        font-weight: 900 !important;
-        text-transform: uppercase;
-        
-      }
-    
-    
-  .burger {
-    width: 40px;
-    height: 40px;
-    background-color: #000;
-    border-radius: 50%;
-    display: flex;
-      align-items: center;
-      justify-content: center;
-    
-  }
-  
-  .wrapper-menu {
-    width: 15px;
-    height: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    transition: transform 330ms ease-out;
-  }
-  
-  .wrapper-menu.open {
-    transform: rotate(-45deg);  
-  }
-  
-  .line-menu {
-    background-color: #fff;
-    border-radius: 5px;
-    width: 100%;
-    height: 2px;
-  }
-  
-  .line-menu.half {
-    width: 50%;
-  }
-  
-  .line-menu.start {
-    transition: transform 330ms cubic-bezier(0.54, -0.81, 0.57, 0.57);
-    transform-origin: right;
-  }
-  
-  .open .line-menu.start {
-    transform: rotate(-90deg) translateX(3px);
-  }
-  
-  .line-menu.end {
-    align-self: flex-end;
-    transition: transform 330ms cubic-bezier(0.54, -0.81, 0.57, 0.57);
-    transform-origin: left;
-  }
-  
-  .open .line-menu.end {
-    transform: rotate(-90deg) translateX(-3px);
-  }
-  
-  .none{
-    display: none !important;
-    animation: fade_in_show 1s;
-  }
-
-  @keyframes fade_in_show {
-    0% {
-         opacity: 0;
-         transform:  translateX(-50px);
-    }
-
-    100% {
-         opacity: 1;
-         transform: translateX(0px);
-    }
-}
-
-@keyframes fade_out_show {
-    0% {
-        opacity: 1;
-        transform: translateX(0px);
-    }
-
-    100% {
-         opacity: 0;
-         transform:  translateX(-50px);
-    }
 }
