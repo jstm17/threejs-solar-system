@@ -13,7 +13,7 @@ const loader = new THREE.TextureLoader();
 
 const pauseBtn = document.querySelector('.pause-btn');
 
-// Planètes data
+// Planets data
 const planets = [
     {
         name: 'sun',
@@ -135,7 +135,7 @@ const planets = [
 ]
 
 
-// Calcul position X des planètes
+// Planet position
 const distance = 20;
 
 planets[1].posX = planets[0].size + planets[1].size*2 + distance;
@@ -147,7 +147,7 @@ planets[6].posX = planets[5].posX + planets[6].size*2 + distance;
 planets[7].posX = planets[6].posX + planets[7].size*2 + distance;
 planets[8].posX = planets[7].posX + planets[8].size*2 + distance;
 
-// Création des planètes
+// Planet creation
 const planetsMesh = {};
 const ringsMesh = {};
 const clickableObjects = [];
@@ -170,7 +170,7 @@ planets.forEach(item => {
 
     planetsMesh[item.name] = planet;
 
-    // Anneaux
+    // Rings
     if(item.ring) {
         const ringGeometry = new THREE.RingGeometry( item.ring.innerRadius, item.ring.outerRadius, 32 );
         const ringMaterial = new THREE.MeshLambertMaterial( { 
@@ -187,7 +187,7 @@ planets.forEach(item => {
         ringsMesh[item.name] = ring;
     }
 
-    // Lune
+    // Moon
     if(item.satellite) {
         const satelliteTexture = loader.load('textures/' + item.satellite.texture ); 
 
@@ -201,7 +201,7 @@ planets.forEach(item => {
         planetsMesh[item.satellite.name] = satellite;
     }
 
-    // Trajectoires
+    // Trajectories
         const pathGeometry = new THREE.RingGeometry( item.posX, item.posX + 0.1, 64 );
         const pathMaterial = new THREE.MeshBasicMaterial( { 
             color: 0xffffff,
@@ -214,17 +214,15 @@ planets.forEach(item => {
 
 });
 
-// Lumière
+// Light
 const pointLight = new THREE.PointLight( 0xFFEFAD, 5, 500, 3 );
 pointLight.position.set( 5, 5, 5 );
 scene.add( pointLight );
-// const helper = new THREE.PointLightHelper( pointLight, 50 );
-// scene.add( helper );
 
-const ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 ); // soft white light
+const ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 );
 scene.add( ambientLight );
 
-// Lumière du soleil
+// Sun light
 const sunLightTexture = new THREE.TextureLoader().load( 'textures/glow.png');
 const sunLightMaterial = new THREE.SpriteMaterial( { map: sunLightTexture, color: 0xFFEFAD, opacity: 0.5 } );
 
@@ -252,7 +250,6 @@ for(let i=0; i < starsNb; i++){
     star.position.set(Math.random()*1000 - 500 , Math.random()*1000 - 500 ,  Math.random()*1000 - 500);
     scene.add( star );
 
-    // starsMesh.push(star);
     starsMesh.push({
         'mesh': star,
         'posX': star.position.x,
@@ -283,7 +280,6 @@ renderer.setSize(sizes.width, sizes.height);
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-// Eventlistener (onClick)
 canvas.addEventListener('click', onClick);
 var planetInfo = document.querySelector(".planet-info");
 var planetInfoDesc = document.querySelector(".desc");
@@ -309,28 +305,23 @@ function onClick(event) {
 
     // Calcul de l'intersection avec les obj ( cube, sphere, cone)
     const intersects = raycaster.intersectObjects(clickableObjects, true);
-    
-    // planetInfo.classList.add("none");
-    if (intersects.length > 0) {
-        // Au click
-        const object = intersects[0].object;
-        //alert(`Forme géométrique touchée : ${object.name}`);
 
-        // Affichage infos planètes
+    if (intersects.length > 0) {
+        const object = intersects[0].object;
+
+        // Display infos
         planetInfo.classList.remove("none");
         pauseBtn.classList.add('stop');
         pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd" />';
 
-        //display data info
-
-        console.log(object)
+        // display data info
         var currentPlanet;
         for( var i=0; i < planets.length; i++){
             if (planets[i].name == object.name) {
                 currentPlanet = planets[i];
             }
         }
-        //console.log(currentPlanet);
+
         document.querySelector(".planet-info .name").innerHTML = currentPlanet.frenchName;
         planetInfoComposition.textContent = currentPlanet.composition;
         planetInfoDesc.textContent = currentPlanet.desc;
@@ -359,7 +350,6 @@ controls.enableDamping = true
 
 
 // Time / Pause
-
 document.querySelector('.close-btn').addEventListener("click", () => {
     gsap.to(camera.position, {
         x: 0,
@@ -401,16 +391,13 @@ let years = 0;
 // Animate
 const animate = () => {
 
-    // Stop rotation qd click sur stop
+    // Stop rotation
     if(!pauseBtn.classList.contains('stop')){
         seconde += 0.01;
-        
-        // +1 an à chaque fois que la Terre fait un tour complet 
+
         setTimeout(() => {
             if(Math.round(planetsMesh["earth"].position.x) == planets[3].posX){
                 years += 0.2;
-                // console.log(planetsMesh["earth"].position.x)
-                // console.log(years)
             } else {
                 years = Math.round(years);
             }
@@ -422,10 +409,10 @@ const animate = () => {
 
     controls.update();
 
-    // Affichage du nombre d'années
+    // Display years
     document.querySelector('.year').innerHTML = Math.round(years) + " années passées";
 
-    // Rotation planète + anneaux autour du soleil  
+    // Planets & rings rotation around sun
     planetsMesh["mercury"].position.x = Math.cos( seconde * 25 ) * planets[1].posX;
     planetsMesh["mercury"].position.z = Math.sin( seconde * 25 ) * planets[1].posX;
 
@@ -456,25 +443,14 @@ const animate = () => {
     planetsMesh["neptune"].position.x = Math.cos( seconde * 0.006 ) * planets[8].posX;
     planetsMesh["neptune"].position.z = Math.sin( seconde * 0.006 ) * planets[8].posX;
 
-    // Rotation planète + anneaux
+    // Planet & rings rotation
     for (let key in planetsMesh) {
         planetsMesh[key].rotation.y += 0.001;
-      }
+    }
 
-      for (let key in ringsMesh) {
+    for (let key in ringsMesh) {
         ringsMesh[key].rotation.y += 0.001;
-      }
-
-    // Déplacement des étoiles
-    // starsMesh.forEach(star => {
-    //     // console.log(star)
-    //     const starMesh = star.mesh;
-    //     // const nb = Math.random()*0.02 - 0.01;
-
-    //     starMesh.position.x = Math.cos(seconde * 1 )* star.posX ;
-    //     starMesh.position.z = Math.sin(seconde * 1)* star.posZ ;
-    //     // starMesh.position.y = Math.sin(time * 1)* star.posX ;
-    // })
+    }
 
     requestAnimationFrame(animate);
     controls.update();
