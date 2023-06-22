@@ -315,9 +315,7 @@ function onClick(event) {
         const object = intersects[0].object;
         //alert(`Forme géométrique touchée : ${object.name}`);
         togglePause() 
-        //camera.position.z = object.position.z;
-        camera.position.x = object.position.x;
-        camera.position.Z = object.position.Z;
+
         planetInfo.classList.remove("none");
         //display data info
         document.querySelector(".planet-info .name").innerHTML = object.name;
@@ -332,7 +330,16 @@ function onClick(event) {
         planetInfoDesc.textContent = currentPlanet.desc;
         planetInfoHeight.textContent = currentPlanet.height;
         planetInfoRotation.textContent = currentPlanet.rotationI;
-        
+        console.log(currentPlanet.posX)
+        //camera.position.z = object.position.z;
+        //camera.position.x = object.position.x;
+        //camera.position.Z = object.position.Z;
+        gsap.to(camera.position,{
+            x: object.position.x * 2,
+            z: 14,
+            duration: 1.5
+        });
+
         if (pauseBtn.classList.contains('stop')) {
             planetInfo.classList.remove("none");
         } else {

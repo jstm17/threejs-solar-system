@@ -52,12 +52,13 @@ html {
     left: 3%;
     bottom: 10%;
     color: black;
-    padding: 0px 20px;
-    max-width: 30vw;
+    padding: 15px 30px;
+    max-width: 35vw;
 }
 
 .planet-info .flex p:first-child{
     margin-right: 20px;
+    min-width: 100px ;
 }
 
 .none{
@@ -67,4 +68,11 @@ html {
 .flex{
     display: flex;
     align-items: center;
+}
+
+.titleInfo{
+    background-color: #000;
+    color: white;
+    padding: 10px 20px;
+    width: 100%;
 }
