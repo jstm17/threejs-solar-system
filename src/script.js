@@ -1,4 +1,6 @@
 import * as THREE from "three"
+import gsap from "gsap";
+
 import {
     OrbitControls
 } from "three/examples/jsm/controls/OrbitControls.js";
@@ -7,31 +9,51 @@ import {
 const scene = new THREE.Scene();
 const loader = new THREE.TextureLoader();
 
+//pause btn
+
+const pauseBtn = document.querySelector('.pause-btn');
+
 // Planètes data
 const planets = [
     {
         name: 'sun',
         texture: 'sunSurfaceMaterial.jpg',
         size: 20,
-        posX: 0
+        posX: 0,
+        desc: 'Le Soleil est l\'étoile centrale de notre système solaire et joue un rôle crucial en fournissant la chaleur et la lumière nécessaires à la vie sur Terre.',
+        composition : 'Hydrogène (74% de sa masse) et d\'hélium (24% de sa masse)',
+        height: 'Environ 1,4 million de km',
+        rotationI: 'Environ 27 jours à son équateur et en environ 34 jours près de ses pôles.' ,
     },
     {
         name: 'mercury',
         texture: 'mercurySurfaceMaterial.jpg',
         size: 1,
-        posX: 0
+        posX: 0,
+        desc: 'Mercure, la plus proche du Soleil, est une petite planète rocheuse au paysage aride et inhospitalier.',
+        composition : 'Rocheuse',
+        height: '4 879 km de diamètre',
+        rotationI: 'Environ 59 jours terrestres pour une rotation complète' ,
     },
     {
         name: 'venus',
         texture: 'venusSurfaceMaterial.jpg',
         size: 3,
-        posX: 0
+        posX: 0,
+        desc: 'Vénus, la deuxième planète du système solaire, est un monde étouffant recouvert d\'une épaisse atmosphère de gaz toxiques.',
+        composition : 'Rocheuse',
+        height: '12 104 km de diamètre',
+        rotationI: 'Environ 243 jours terrestres pour une rotation complète' ,
     },
     {
         name: 'earth',
         texture: 'earthSurfaceMaterial.jpg',
         size: 4,
         posX: 0,
+        desc: 'La Terre, notre planète bleue, est un havre de vie avec des océans, des continents et une atmosphère propice à la diversité biologique.',
+        composition : 'Rocheuse (avec une atmosphère)',
+        height: '12 742 km de diamètre',
+        rotationI: 'Environ 24 heures pour une rotation complète',
         satellite: {
             name: 'lune',
             texture: 'moon.jpg',
@@ -43,19 +65,31 @@ const planets = [
         name: 'mars',
         texture: 'marsSurfaceMaterial.png',
         size: 2,
-        posX: 0
+        posX: 0,
+        desc: 'Mars, la \'planète rouge\', intrigue les scientifiques avec ses canyons, ses volcans et sa possibilité d\'abriter des formes de vie microscopiques.',
+        composition : 'Rocheuse',
+        height: '6 779 km de diamètre',
+        rotationI: 'Environ 24,6 heures pour une rotation complète' ,
     },
     {
         name: 'jupiter',
         texture: 'jupiterSurfaceMaterial.jpg',
         size: 10,
-        posX: 0
+        posX: 0,
+        desc: 'Jupiter, la plus grande planète du système solaire, est un géant gazeux aux puissantes tempêtes et à l\'énigmatique Grande Tache Rouge.',
+        composition : 'Gazeuse',
+        height: '139 820 km de diamètre',
+        rotationI: 'Environ 9,9 heures pour une rotation complète' ,
     },
     {
         name: 'saturn',
         texture: 'saturnSurfaceMaterial.jpg',
         size: 7,
         posX: 0,
+        desc: 'Saturne, célèbre pour ses magnifiques anneaux, est une planète majestueuse aux nuances dorées, abritant des dizaines de lunes.',
+        composition : 'Gazeuse',
+        height: '116 460 km de diamètre',
+        rotationI: 'Environ 10,7 heures pour une rotation complète' ,
         ring: {
             innerRadius: 10,
             outerRadius: 15,
@@ -68,6 +102,10 @@ const planets = [
         texture: 'uranusSurfaceMaterial.jpg',
         size: 6,
         posX: 0,
+        desc: 'Uranus, la géante glacée, possède une atmosphère composée de gaz gelés et orbite autour du Soleil sur un axe incliné unique.',
+        composition : 'Gazeuse',
+        height: 'Environ 2,9 milliards de kilomètres',
+        rotationI: 'Environ 17,2 heures pour une rotation complète' ,
         ring: {
             innerRadius: 10,
             outerRadius: 11,
@@ -79,7 +117,11 @@ const planets = [
         name: 'neptune',
         texture: 'neptuneSurfaceMaterial.jpg',
         size: 5,
-        posX: 0
+        posX: 0,
+        desc: 'Neptune, la mystérieuse planète bleue, est un monde venteux et froid, entouré d\'une atmosphère riche en méthane et en nuages tourbillonnants.',
+        composition : 'Gazeuse',
+        height: '49 244 km de diamètre',
+        rotationI: ' Environ 16,1 heures pour une rotation complète'
     },
 ]
 
@@ -243,6 +285,11 @@ const mouse = new THREE.Vector2();
 
 // Eventlistener (onClick)
 canvas.addEventListener('click', onClick);
+var planetInfo = document.querySelector(".planet-info");
+var planetInfoDesc = document.querySelector(".desc");
+var planetInfoComposition = document.querySelector(".composition");
+var planetInfoHeight = document.querySelector(".height");
+var planetInfoRotation = document.querySelector(".rotation");
 
 function onClick(event) {
     // Convertir les coordonnées de la souris en coordonnées normalisés ( de -1 à 1 sur les axes X et Y)
@@ -266,7 +313,31 @@ function onClick(event) {
     if (intersects.length > 0) {
         // Au click
         const object = intersects[0].object;
-        alert(`Forme géométrique touchée : ${object.name}`);
+        //alert(`Forme géométrique touchée : ${object.name}`);
+        togglePause() 
+        //camera.position.z = object.position.z;
+        camera.position.x = object.position.x;
+        camera.position.Z = object.position.Z;
+        planetInfo.classList.remove("none");
+        //display data info
+        document.querySelector(".planet-info .name").innerHTML = object.name;
+        var currentPlanet;
+        for( var i=0; i < planets.length; i++){
+            if (planets[i].name == object.name) {
+                currentPlanet = planets[i];
+            }
+        }
+        //console.log(currentPlanet);
+        planetInfoComposition.textContent = currentPlanet.composition;
+        planetInfoDesc.textContent = currentPlanet.desc;
+        planetInfoHeight.textContent = currentPlanet.height;
+        planetInfoRotation.textContent = currentPlanet.rotationI;
+        
+        if (pauseBtn.classList.contains('stop')) {
+            planetInfo.classList.remove("none");
+        } else {
+            planetInfo.classList.add("none");
+        }
     }
 }
 
@@ -277,8 +348,6 @@ controls.enableDamping = true
 
 // Time / Pause
 
-const pauseBtn = document.querySelector('.pause-btn');
-
 pauseBtn.addEventListener('click', function() {
     pauseBtn.classList.toggle('stop');
 
@@ -288,6 +357,16 @@ pauseBtn.addEventListener('click', function() {
         pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM9 8.25a.75.75 0 00-.75.75v6c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75H9zm5.25 0a.75.75 0 00-.75.75v6c0 .414.336.75.75.75H15a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75h-.75z" clip-rule="evenodd" />';
       }
 })
+
+function togglePause() {
+    pauseBtn.classList.toggle('stop');
+
+    if (pauseBtn.classList.contains('stop')) {
+        pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd" />';
+      } else {
+        pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM9 8.25a.75.75 0 00-.75.75v6c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75H9zm5.25 0a.75.75 0 00-.75.75v6c0 .414.336.75.75.75H15a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75h-.75z" clip-rule="evenodd" />';
+      }
+}
 
 let seconde = 0;
 let years = 0;
@@ -314,6 +393,8 @@ const animate = () => {
     } else {
         seconde = seconde
     }
+
+    controls.update();
 
     // Affichage du nombre d'années
     document.querySelector('.year').innerHTML = Math.round(years) + " années passées";
@@ -380,3 +461,4 @@ const animate = () => {
 }
 
 animate()
+

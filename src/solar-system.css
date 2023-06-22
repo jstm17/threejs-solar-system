@@ -45,3 +45,26 @@ html {
 .menu{
     z-index: 50 !important;
 }
+
+.planet-info{
+    background-color: #fff;
+    position: absolute;
+    left: 3%;
+    bottom: 10%;
+    color: black;
+    padding: 0px 20px;
+    max-width: 30vw;
+}
+
+.planet-info .flex p:first-child{
+    margin-right: 20px;
+}
+
+.none{
+    display: none;
+}
+
+.flex{
+    display: flex;
+    align-items: center;
+}
