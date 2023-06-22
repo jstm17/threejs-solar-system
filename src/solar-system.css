@@ -82,6 +82,7 @@ html {
     color: white;
     padding: 10px 20px;
     width: 100%;
+    border-radius: 100px;
 }
 
 .close-btn {
