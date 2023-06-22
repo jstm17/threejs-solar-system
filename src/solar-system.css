@@ -54,6 +54,7 @@ html {
     color: black;
     padding: 15px 30px;
     max-width: 35vw;
+    border-radius: 20px;
 }
 
 .planet-info .flex p:first-child{

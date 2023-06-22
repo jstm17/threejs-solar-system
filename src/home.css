@@ -27,7 +27,7 @@ height: auto;
     color: white;
     width: fit-content;
     font-family: 'Exo 2', sans-serif;
-    font-weight: 100;
+    font-weight: 400;
     text-transform: capitalize;
     padding: 10px 20px;
     margin-top: 3%;
@@ -35,12 +35,8 @@ height: auto;
     text-decoration: none;
     display: block;
     transition: 0.2s ease;
-}
-
-.button:hover {
-  background-color: white;
-  color: black;
-
+    background-color: white;
+    color: black;
 }
 
 .intro{

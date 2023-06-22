@@ -20,6 +20,7 @@ const planets = [
         texture: 'sunSurfaceMaterial.jpg',
         size: 20,
         posX: 0,
+        frenchName: 'Soleil',
         desc: 'Le Soleil est l\'étoile centrale de notre système solaire et joue un rôle crucial en fournissant la chaleur et la lumière nécessaires à la vie sur Terre.',
         composition : 'Hydrogène (74% de sa masse) et d\'hélium (24% de sa masse)',
         height: 'Environ 1,4 million de km',
@@ -30,6 +31,7 @@ const planets = [
         texture: 'mercurySurfaceMaterial.jpg',
         size: 1,
         posX: 0,
+        frenchName: 'Mercure',
         desc: 'Mercure, la plus proche du Soleil, est une petite planète rocheuse au paysage aride et inhospitalier.',
         composition : 'Rocheuse',
         height: '4 879 km de diamètre',
@@ -40,6 +42,7 @@ const planets = [
         texture: 'venusSurfaceMaterial.jpg',
         size: 3,
         posX: 0,
+        frenchName: 'Vénus',
         desc: 'Vénus, la deuxième planète du système solaire, est un monde étouffant recouvert d\'une épaisse atmosphère de gaz toxiques.',
         composition : 'Rocheuse',
         height: '12 104 km de diamètre',
@@ -50,6 +53,7 @@ const planets = [
         texture: 'earthSurfaceMaterial.jpg',
         size: 4,
         posX: 0,
+        frenchName: 'Terre',
         desc: 'La Terre, notre planète bleue, est un havre de vie avec des océans, des continents et une atmosphère propice à la diversité biologique.',
         composition : 'Rocheuse (avec une atmosphère)',
         height: '12 742 km de diamètre',
@@ -66,6 +70,7 @@ const planets = [
         texture: 'marsSurfaceMaterial.png',
         size: 2,
         posX: 0,
+        frenchName: 'Mars',
         desc: 'Mars, la \'planète rouge\', intrigue les scientifiques avec ses canyons, ses volcans et sa possibilité d\'abriter des formes de vie microscopiques.',
         composition : 'Rocheuse',
         height: '6 779 km de diamètre',
@@ -76,6 +81,7 @@ const planets = [
         texture: 'jupiterSurfaceMaterial.jpg',
         size: 10,
         posX: 0,
+        frenchName: 'Jupiter',
         desc: 'Jupiter, la plus grande planète du système solaire, est un géant gazeux aux puissantes tempêtes et à l\'énigmatique Grande Tache Rouge.',
         composition : 'Gazeuse',
         height: '139 820 km de diamètre',
@@ -86,6 +92,7 @@ const planets = [
         texture: 'saturnSurfaceMaterial.jpg',
         size: 7,
         posX: 0,
+        frenchName: 'Saturne',
         desc: 'Saturne, célèbre pour ses magnifiques anneaux, est une planète majestueuse aux nuances dorées, abritant des dizaines de lunes.',
         composition : 'Gazeuse',
         height: '116 460 km de diamètre',
@@ -102,6 +109,7 @@ const planets = [
         texture: 'uranusSurfaceMaterial.jpg',
         size: 6,
         posX: 0,
+        frenchName: 'Uranus',
         desc: 'Uranus, la géante glacée, possède une atmosphère composée de gaz gelés et orbite autour du Soleil sur un axe incliné unique.',
         composition : 'Gazeuse',
         height: 'Environ 2,9 milliards de kilomètres',
@@ -118,6 +126,7 @@ const planets = [
         texture: 'neptuneSurfaceMaterial.jpg',
         size: 5,
         posX: 0,
+        frenchName: 'Neptune',
         desc: 'Neptune, la mystérieuse planète bleue, est un monde venteux et froid, entouré d\'une atmosphère riche en méthane et en nuages tourbillonnants.',
         composition : 'Gazeuse',
         height: '49 244 km de diamètre',
@@ -253,15 +262,6 @@ for(let i=0; i < starsNb; i++){
 
 }
 
-    // const starMaterial = new THREE.SpriteMaterial( { map: starTexture, color: 0xffffff} );
-
-    // const star = new THREE.Sprite( starMaterial );
-    // star.scale.set(200, 200)
-    // star.position.set(100, 100, 0);
-    // scene.add( star );
-
-
-
 // Sizes
 const sizes = {
     width: window.innerWidth,
@@ -309,16 +309,21 @@ function onClick(event) {
 
     // Calcul de l'intersection avec les obj ( cube, sphere, cone)
     const intersects = raycaster.intersectObjects(clickableObjects, true);
-
+    
+    // planetInfo.classList.add("none");
     if (intersects.length > 0) {
         // Au click
         const object = intersects[0].object;
         //alert(`Forme géométrique touchée : ${object.name}`);
-        togglePause() 
 
+        // Affichage infos planètes
         planetInfo.classList.remove("none");
+        pauseBtn.classList.add('stop');
+        pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd" />';
+
         //display data info
-        document.querySelector(".planet-info .name").innerHTML = object.name;
+
+        console.log(object)
         var currentPlanet;
         for( var i=0; i < planets.length; i++){
             if (planets[i].name == object.name) {
@@ -326,54 +331,25 @@ function onClick(event) {
             }
         }
         //console.log(currentPlanet);
+        document.querySelector(".planet-info .name").innerHTML = currentPlanet.frenchName;
         planetInfoComposition.textContent = currentPlanet.composition;
         planetInfoDesc.textContent = currentPlanet.desc;
         planetInfoHeight.textContent = currentPlanet.height;
         planetInfoRotation.textContent = currentPlanet.rotationI;
-        console.log(currentPlanet.posX)
-        //camera.position.z = object.position.z;
-        //camera.position.x = object.position.x;
-        //camera.position.Z = object.position.Z;
-        
-        // gsap.to(camera.position,{
-        //     x: object.position.x * 2,
-        //     z: 14,
-        //     duration: 1.5
-        // });
-
-        object.geometry.computeBoundingBox();
-        let boundingBox = object.geometry.boundingBox;
-        const meshPosition = new THREE.Vector3();
-        meshPosition.subVectors(boundingBox.max, boundingBox.min);
-        meshPosition.multiplyScalar(0.5);
-        meshPosition.add(boundingBox.min);
-        meshPosition.applyMatrix4(object.matrixWorld);
+        console.log(currentPlanet)
 
         gsap.to(camera.position,{
-            x: meshPosition.x + 50,
-            y: meshPosition.y + 50,
-            z: meshPosition.z + 50,
+            x: object.position.x + 50,
+            y: object.position.y + 50,
+            z: object.position.z + 50,
+            duration: 1.5
+        })
+        gsap.to(controls.target, {
+            x: object.position.x,
+            y: object.position.y,
+            z: object.position.z,
             duration: 1.5
         });
-    
-        gsap.to(controls.target,{
-            x: meshPosition.x,
-            y: meshPosition.y,
-            z: meshPosition.z,
-            duration: 1.5,
-            onUpdate: function() {
-                controls.update();
-            }
-        });
-        // controls.target.setX(meshPosition.x);
-        // controls.target.setY(meshPosition.y);
-        // controls.target.setZ(meshPosition.z);
-
-        if (pauseBtn.classList.contains('stop')) {
-            planetInfo.classList.remove("none");
-        } else {
-            planetInfo.classList.add("none");
-        }
     }
 }
 
@@ -384,15 +360,6 @@ controls.enableDamping = true
 
 // Time / Pause
 
-pauseBtn.addEventListener('click', function() {
-    pauseBtn.classList.toggle('stop');
-
-    if (pauseBtn.classList.contains('stop')) {
-        pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd" />';
-      } else {
-        pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM9 8.25a.75.75 0 00-.75.75v6c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75H9zm5.25 0a.75.75 0 00-.75.75v6c0 .414.336.75.75.75H15a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75h-.75z" clip-rule="evenodd" />';
-      }
-})
 document.querySelector('.close-btn').addEventListener("click", () => {
     gsap.to(camera.position, {
         x: 0,
@@ -411,25 +378,29 @@ document.querySelector('.close-btn').addEventListener("click", () => {
         }
     });
     planetInfo.classList.add("none");
+    pauseBtn.classList.remove('stop');
+    pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM9 8.25a.75.75 0 00-.75.75v6c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75H9zm5.25 0a.75.75 0 00-.75.75v6c0 .414.336.75.75.75H15a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75h-.75z" clip-rule="evenodd" />';
+
 });
+pauseBtn.addEventListener('click', togglePause)
 
 function togglePause() {
-    pauseBtn.classList.add('stop');
-
+    
     if (pauseBtn.classList.contains('stop')) {
-        pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd" />';
-      } else {
+        pauseBtn.classList.remove('stop');
         pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM9 8.25a.75.75 0 00-.75.75v6c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75H9zm5.25 0a.75.75 0 00-.75.75v6c0 .414.336.75.75.75H15a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75h-.75z" clip-rule="evenodd" />';
+    } else {
+        pauseBtn.classList.add('stop');
+        pauseBtn.innerHTML = '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd" />';
       }
 }
 
 let seconde = 0;
 let years = 0;
 
-
 // Animate
 const animate = () => {
-    
+
     // Stop rotation qd click sur stop
     if(!pauseBtn.classList.contains('stop')){
         seconde += 0.01;
@@ -504,11 +475,6 @@ const animate = () => {
     //     starMesh.position.z = Math.sin(seconde * 1)* star.posZ ;
     //     // starMesh.position.y = Math.sin(time * 1)* star.posX ;
     // })
-
-   
-    // star.position.x =  Math.cos(seconde*1)*100 ;
-    // star.position.z =  Math.sin(seconde*1)*100 ;
-    //   console.log(seconde)
 
     requestAnimationFrame(animate);
     controls.update();
